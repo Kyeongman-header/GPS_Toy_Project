@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Arduino GPS</title>
+    {% if arduinos.0.name %}
+        <h1>{{arduinos.0.name}}'s current location : </h1>
+    {% endif %}
+    {% if arduinos.0.langitude %}
+        <h2>langitude : {{arduinos.0.langitude}}</h2>
+    {% endif %}
+    {% if arduinos.0.longitude %}
+        <h2>longitude : {{arduinos.0.longitude}}</h2>
+    {% endif %}
+    {% if arduinos.0.pub_date %}
+        <h2>last update time : {{arduinos.0.pub_date}}</h2>
+    {% endif %}
+</head>
+<body>
+	<div id="map" style="width:500px;height:400px;"></div>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ded751f5e2abbaac78bd5b5365eb3e96"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ded751f5e2abbaac78bd5b5365eb3e96&libraries=services,clusterer,drawing"></script>
+	<script>
+		
+        var container = document.getElementById('map');
+		let arduinos = JSON.parse("{{ js_arduinos | escapejs }}");
+        
+
+        var options = {
+			center: new kakao.maps.LatLng(arduinos[0]["longitude"],arduinos[0]["langitude"]),
+			level: 8
+		};
+
+		var map = new kakao.maps.Map(container, options);
+
+
+        for(i=0; i<arduinos.length; i++)
+        {
+            var marker = new kakao.maps.Marker(
+            {   map : map,
+                position : new kakao.maps.LatLng(arduinos[i]["longitude"],arduinos[i]["langitude"]),
+                clickable: true 
+            },
+            );  
+            var infowindow = new kakao.maps.InfoWindow({
+            content: '<div><div>'+'longitude : '+
+                arduinos[i]["longitude"].toString()+
+                '</div><div>'+
+                'langidute : ' + arduinos[i]["langitude"].toString()+
+                '</div><div>'+
+                arduinos[i]["pub_date"].toString()
+                +'</div></div>' // 인포윈도우에 표시할 내용
+            });
+
+    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+    // 이벤트 리스너로는 클로저를 만들어 등록합니다 
+    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+        kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+        kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+        }  
+
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+        function makeOverListener(map, marker, infowindow) {
+        return function() {
+        infowindow.open(map, marker);
+        };
+        }
+
+    // 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+        function makeOutListener(infowindow) {
+            return function() {
+            infowindow.close();
+        };
+        }
+       
+        
+        
+	</script>
+</body>
+</html>
