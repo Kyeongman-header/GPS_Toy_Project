@@ -1,7 +1,7 @@
 # GPS_Toy_Project
 A GPS Toy Project.
 
-* Requirements.txt에 있는 파이썬 라이브러리들(ex. django, djangorestframework... 등등) 부터 먼저 다운로드 받으세요
+* Requirements.txt에 있는 파이썬 라이브러리들(ex. django, djangorestframework... 등등) 부터 먼저 다운로드 받으세요 -> pip install -r requirements.txt
 참고로 제가 작업한 파이썬 버전은 3.8입니다.
 
 * 실행 -> python manage.py runserver
