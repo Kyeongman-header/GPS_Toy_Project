@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.http import Http404
+from django.http import Http404,JsonResponse
 from .models import *
 from django.template import loader
 # Create your views here.
@@ -23,9 +23,12 @@ def map(request):
 
 class UpdateGPS(APIView):
     def get(self, request, format=None):
-        arduinos = arduino.objects.all()
-        serializer = ArduinoSerializer(arduinos, many=True)
-        return Response(serializer.data)
+        longitude=request.GET['longitude']
+        langitude=request.GET['langitude']
+        a=arduino(name="Sample",langitude=float(langitude),longitude=float(longitude))
+        a.save()
+
+        return JsonResponse({"lon" : longitude,"lan" : langitude}, status=status.HTTP_201_CREATED) #client에게 JSON response 전달
     
     def post(self, request):
         arduino_serializer = ArduinoSerializer(data=request.data)
