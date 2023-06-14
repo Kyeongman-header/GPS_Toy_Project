@@ -5,9 +5,10 @@ A GPS Toy Project.
   ```
   pip install -r requirements.txt
   ```
-* runserver로 서버 실행 가능합니다.
+* runserver로 서버 실행 가능합니다. ( 추가! thingspeak.py도 같이 실행하셔야 thingspeak 서버에서 gps 값을 읽어들입니다.
   ```
   python manage.py runserver
+  python thingspeak.py
   ```
 * 이후 127.0.0.1:8000 으로 메인 페이지 접속 가능,
 * 127.0.0.1:8000/admin으로 접속시 admin page 접속 가능(현재 계정은 아이디 : admin 패스워드 : adminpassword 입니다. 물론 db내용을 싹 삭제하시면 새롭게 정하실 수 있습니다.)
